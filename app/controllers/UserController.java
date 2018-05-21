@@ -41,7 +41,7 @@ public class UserController extends Controller {
 
     //GET Users
     public Result getUsers() {
-        return ok(Json.toJson(userService.readAll()));
+        return ok(Json.toJson(userService.findAll()));
     }
 
 }

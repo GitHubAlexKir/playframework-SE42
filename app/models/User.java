@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @NamedQueries({
         @NamedQuery(query = "SELECT s FROM User s", name = "findAllUsers"),
-        @NamedQuery(query = "SELECT s FROM User s WHERE s.name LIKE :userName", name = "findOneUser")
+        @NamedQuery(query = "SELECT s FROM User s WHERE s.id = :id", name = "findOneUser")
 })
 public class User implements Serializable {
     @Id

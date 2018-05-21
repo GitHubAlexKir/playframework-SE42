@@ -15,15 +15,12 @@ public class UserService {
 
     public List<User> findAll() {
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-
         return manager.createNamedQuery("findAllUsers",User.class).getResultList();
     }
 
-    public List<User> find(String name) {
+    public User find(int id) {
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-
-        return manager.createNamedQuery("findOneUser",User.class).setParameter("UserName", name)
-                .getResultList();
+        return manager.createNamedQuery("findOneUser",User.class).setParameter("id", id).getSingleResult();
     }
 
     public void create(User user) {
