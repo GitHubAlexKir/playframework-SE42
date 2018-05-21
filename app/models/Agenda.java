@@ -6,11 +6,7 @@ import java.io.Serializable;
 @Entity
 public class Agenda implements Serializable {
     @Id
-    @GeneratedValue(
-            strategy= GenerationType.AUTO
-
-    )
-
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     private String name;
 

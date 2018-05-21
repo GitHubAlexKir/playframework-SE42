@@ -7,17 +7,19 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@NamedQueries({
+        @NamedQuery(query = "SELECT s FROM User s", name = "findAllUsers"),
+        @NamedQuery(query = "SELECT s FROM User s WHERE s.name LIKE :userName", name = "findOneUser")
+})
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "user_id", unique = true)
     private int id;
-
-    @Column(name = "user_name", nullable = false)
     private String name;
+
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Agenda> agendaList = new ArrayList<>();
+
     public int getId() {
         return id;
     }

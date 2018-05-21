@@ -10,12 +10,23 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class UserService {
-    private final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("KillerApp");
+    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+            .createEntityManagerFactory("defaultPersistenceUnit");
 
+    public List<User> findAll() {
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+
+        return manager.createNamedQuery("findAllUsers",User.class).getResultList();
+    }
+
+    public List<User> find(String name) {
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+
+        return manager.createNamedQuery("findOneUser",User.class).setParameter("UserName", name)
+                .getResultList();
+    }
 
     public void create(User user) {
-        // Create an EntityManager
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
@@ -37,123 +48,21 @@ public class UserService {
         }
     }
 
-    public List readAll() {
-
-        List students = null;
-
+    public void update(User newUser) {
         // Create an EntityManager
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
         try {
-            // Get a transaction
             transaction = manager.getTransaction();
-            // Begin the transaction
             transaction.begin();
 
-            // Get a List of Students
-            students = manager.createQuery("SELECT s FROM User s",
-                    User.class).getResultList();
-
-            // Commit the transaction
-            transaction.commit();
-        } catch (Exception ex) {
-            // If there are any exceptions, roll back the changes
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            // Print the Exception
-            ex.printStackTrace();
-        } finally {
-            // Close the EntityManager
-            manager.close();
-        }
-        return students;
-    }
-
-
-    public void delete(int id) {
-        // Create an EntityManager
-        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-        EntityTransaction transaction = null;
-
-        try {
-            // Get a transaction
-            transaction = manager.getTransaction();
-            // Begin the transaction
-            transaction.begin();
-
-            // Get the Student object
-            User stu = manager.find(User.class, id);
-
-            // Delete the student
-            manager.remove(stu);
-
-            // Commit the transaction
-            transaction.commit();
-        } catch (Exception ex) {
-            // If there are any exceptions, roll back the changes
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            // Print the Exception
-            ex.printStackTrace();
-        } finally {
-            // Close the EntityManager
-            manager.close();
-        }
-
-    }
-    public User find(int id) {
-        User user = null;
-        // Create an EntityManager
-        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-        EntityTransaction transaction = null;
-
-        try {
-            // Get a transaction
-            transaction = manager.getTransaction();
-            // Begin the transaction
-            transaction.begin();
-
-            // Get the Student object
-            user = manager.find(User.class, id);
-
-            // Commit the transaction
-            transaction.commit();
-        } catch (Exception ex) {
-            // If there are any exceptions, roll back the changes
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            // Print the Exception
-            ex.printStackTrace();
-        } finally {
-            // Close the EntityManager
-            manager.close();
-        }
-        return user;
-    }
-
-    public void update(User user) {
-        // Create an EntityManager
-        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-        EntityTransaction transaction = null;
-
-        try {
-            // Get a transaction
-            transaction = manager.getTransaction();
-            // Begin the transaction
-            transaction.begin();
-
-            // Get the Student object
-            User stu = manager.find(User.class, user.getId());
-
-            // Change the values
-            stu.setName(user.getName());
+            User user = manager.find(User.class, newUser.getId());
+            user.setName(newUser.getName());
+            user.setAgendaList(newUser.getAgendaList());
 
             // Update the student
-            manager.persist(stu);
+            manager.persist(user);
 
             // Commit the transaction
             transaction.commit();
@@ -166,6 +75,27 @@ public class UserService {
             ex.printStackTrace();
         } finally {
             // Close the EntityManager
+            manager.close();
+        }
+    }
+
+    public void delete(long id) {
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+        try {
+            transaction = manager.getTransaction();
+            transaction.begin();
+            User user = manager.find(User.class, id);
+            manager.remove(user);
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+
+            ex.printStackTrace();
+        } finally {
             manager.close();
         }
     }
