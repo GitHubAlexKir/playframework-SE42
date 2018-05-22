@@ -32,6 +32,15 @@ public class UserController extends Controller {
         userService.delete(id);
         return ok(id + " user deleted");
     }
+    //PUT User
+    public Result editUser(int id) {
+        User user = new User();
+        user.setId(id);
+        JsonNode json = request().body().asJson();
+        user.setName(json.findPath("name").textValue());
+        userService.update(user);
+        return ok(Json.toJson(user));
+    }
     //GET User
     public Result getUser(int id) {
         User user = userService.find(id);

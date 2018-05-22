@@ -3,6 +3,7 @@ GET     /user/:id           controllers.UserController.getUser(id: Int)
 GET     /users              controllers.UserController.getUsers
 POST    /user/add           controllers.UserController.addUser
 DELETE  /user/delete/:id    controllers.UserController.deleteUser(id: Int)
+PUT     /user/edit/:id      controllers.UserController.editUser(id: Int)
 
 #Agenda
 GET     /agenda/:id           controllers.AgendaController.getAgenda(id: Int)

@@ -15,9 +15,9 @@
             <!-- The database username -->
             <property name="javax.persistence.jdbc.user" value="root" />
             <!-- The database password -->
-            <property name="javax.persistence.jdbc.password" value="Wachtwoord2" />
+            <property name="javax.persistence.jdbc.password" value="" />
             <!-- Database auto-create -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
     </persistence-unit>
 </persistence>

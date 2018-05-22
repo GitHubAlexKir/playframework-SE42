@@ -56,8 +56,6 @@ public class UserService {
 
             User user = manager.find(User.class, newUser.getId());
             user.setName(newUser.getName());
-            user.setAgendaList(newUser.getAgendaList());
-
             // Update the student
             manager.persist(user);
 
